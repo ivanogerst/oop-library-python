@@ -1,17 +1,42 @@
-from classes import *
+from classes import Book, Ebook, Patron, Library
 
-book1 = Book("A Game of Thrones", "George R.R. Martin", 0000, True)
+def main():
+    book1 = Book("The Hidden Grove", "Lana Rivers", "ID001", True)
+    book2 = Book("Echoes in the Fog", "Miles Kendrick", "ID002", True)
+    ebook1 = Ebook("Virtual Horizons", "Nia Monroe", "E001", True, 5.4)
 
-book2 = Book("ASOIAF", "George R.R. Martin", 0000, True)
+    patron1 = Patron("Alice", "P001")
+    patron2 = Patron("Bob", "P002") 
 
-patron1 = Patron("Steve", "aaaa")
+    library = Library()
+    library.add_books(book1)
+    library.add_books(book2)
+    library.add_books(ebook1)
+    library.add_patrons(patron1)
+    library.add_patrons(patron2)
+    
+    print("\nCurrent Library Collection:")
+    library.display_collection()
 
-print(patron1.borrowed_books)
+    
+    print("\nChecking out a book to Alice...")
+    library.checkout_to_patron(book1, patron1)
 
-patron1.add_books(book1)
+    print("\nLibrary Collection After Checkout:")
+    library.display_collection()
 
-patron1.add_books(book2)
+    print("\nPatron Info:")
+    library.display_patrons()
 
-patron1.borrowed_books
+    print("\nSearching for books by author 'Miles Kendrick':")
+    library.search_book(book_author="Miles Kendrick")
 
-print(patron1)
+    print("\nReturning book to library...")
+    library.return_books(book1, patron1)
+
+    print("\nLibrary Collection After Return:")
+    library.display_collection()
+
+
+if __name__ == "__main__":
+    main()
