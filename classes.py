@@ -39,6 +39,20 @@ class Book():
         
         return f"Book title: {self.title}\tAuthor: {self.author}\tStatus: {'Available' if self.status else 'Unavailable'}"
     
+
+
+class Ebook(Book):
+    
+    def __init__(self, title, author, identifier, status, size_mb):
+        
+        super().__init__(title, author, identifier, status)
+        
+        self.size_mb = size_mb
+        
+    def __str__(self):
+        
+        return f"Book title: {self.title}\tAuthor: {self.author}\tStatus: {'Available' if self.status else 'Unavailable'}\tFile size in megabytes: {self.size_mb}"
+    
     
     
 class Patron():
@@ -79,4 +93,10 @@ class Patron():
             
     def __str__(self):
         
-        return f"Patron's name: {self.name}\nPatron's borrowed books:\n".join([book.title for book in self.borrowed_books])
+        if not self.borrowed_books:
+            
+            return "Patron has no borrowed books."
+        
+        borrowed_books_str = "\n".join([book.title for book in self.borrowed_books])
+        
+        return f"\nPatron's name: {self.name}\nPatron's borrowed books:\n{borrowed_books_str}"
