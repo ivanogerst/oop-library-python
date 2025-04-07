@@ -19,7 +19,7 @@ class Book():
     #receives two letters, either "T" for True of "F" for False
     def change_status(self, new_status):
         
-        while new_status != "T" or "F":
+        while new_status not in ("T", "F"):
             
             new_status = input(f"For book {self.title }, please enter either the letter 'T' if available or 'F' if not available.\n> ")
             
@@ -72,25 +72,17 @@ class Patron():
         
         print(f"\nYou've successfully added '{added_book.title}' from author '{added_book.author}' to your list!")
         
-    def remove_books(self):
+    def remove_books(self, removed_book):
         
-        if len(self.borrowed_books) == 0:
+        if removed_book not in self.borrowed_books:
             
-            print("There are no books that you've borrowed!")
+            print("No borrowed book with that title!")
             
         else:
             
-            print("Your books:")
+            print(f"You've succesfully removed '{removed_book}' from {self.name}'s cart.")
             
-            for i in range(len(self.borrowed_books)):
-                
-                print(f"\n{i + 1}. {self.borrowed_books[i]}\n")
-            
-            removed_book = int(input("\nPlease enter number of the book that you want to remove: "))
-            
-            print(f"You've succesfully removed '{self.borrowed_books[removed_book - 1].title}' from {self.name}'s cart.")
-            
-            self.borrowed_books.pop(removed_book - 1)
+            self.borrowed_books.remove(removed_book)
             
     def __str__(self):
         
@@ -107,15 +99,15 @@ class Patron():
 class Library:
     
     
-    def __init__(self, book_collection = [], patron_list = []):
+    def __init__(self, book_collection=None, patron_list=None):
         
-        self.book_collection = book_collection
+        self.book_collection = book_collection if book_collection else []
+        
+        self.patron_list = patron_list if patron_list else []
         
         for book in self.book_collection:
             
             book.status = True
-        
-        self.patron_list = patron_list
         
         
     def add_books(self, added_book: Book):
