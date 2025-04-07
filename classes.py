@@ -1,6 +1,6 @@
 class Book():
     
-    def __init__(self, title, author, identifier, status):
+    def __init__(self, title, author, identifier, status = False):
         
         self.title = title
         
@@ -65,11 +65,12 @@ class Patron():
         
         self.borrowed_books = []
         
+    #adds a book to selected patron's profile
     def add_books(self, added_book: Book):
         
         self.borrowed_books.append(added_book)
         
-        print(f"Uspješno ste dodali knjigu '{added_book.title}' autora '{added_book.author}'!")
+        print(f"\nYou've successfully added '{added_book.title}' from author '{added_book.author}' to your list!")
         
     def remove_books(self):
         
@@ -87,7 +88,7 @@ class Patron():
             
             removed_book = int(input("\nPlease enter number of the book that you want to remove: "))
             
-            print(f"You've succesfully removed '{self.borrowed_books[removed_book - 1].title}' from your cart,")
+            print(f"You've succesfully removed '{self.borrowed_books[removed_book - 1].title}' from {self.name}'s cart.")
             
             self.borrowed_books.pop(removed_book - 1)
             
@@ -100,3 +101,88 @@ class Patron():
         borrowed_books_str = "\n".join([book.title for book in self.borrowed_books])
         
         return f"\nPatron's name: {self.name}\nPatron's borrowed books:\n{borrowed_books_str}"
+    
+    
+
+class Library:
+    
+    
+    def __init__(self, book_collection = [], patron_list = []):
+        
+        self.book_collection = book_collection
+        
+        for book in self.book_collection:
+            
+            book.status = True
+        
+        self.patron_list = patron_list
+        
+        
+    def add_books(self, added_book: Book):
+        
+        self.book_collection.append(added_book)
+        
+        added_book.status = True
+        
+        print(f"\nYou've successfully added '{added_book.title}' from author '{added_book.author}' to the library!")
+        
+        
+    def add_patrons(self, added_patron: Patron):
+        
+        self.patron_list.append(added_patron)
+        
+        print(f"\nYou've successfully added '{added_patron.name}' as a Patron!")
+        
+        
+    def checkout_to_patron(self, selected_book: {Book or Ebook}, selected_patron: Patron):
+        
+        if selected_book.status:
+            
+            self.book_collection.remove(selected_book)
+            
+            selected_patron.add_books(selected_book)
+            
+            if selected_book not in self.book_collection:
+                
+                selected_book.status = False
+            
+        else:
+            
+            print("The book isn't available.")
+            
+            
+    def return_books(self, selected_book: {Book or Ebook}, selected_patron: Patron):
+        
+        selected_patron.remove_books(selected_book)
+        
+        self.book_collection.append(selected_book)
+        
+        selected_book.status = True
+        
+        print(f"{selected_patron} successfully returned {selected_book.title} to the library!")
+        
+        
+    def display_collection(self):
+        
+        for i in self.book_collection:
+            
+            print(f"\n{i}")
+            
+            
+    def display_patrons(self):
+        
+        for patron in range(len(self.patron_list)):
+            
+            print(f"\n\n{patron + 1}. {self.patron_list[patron].name}")
+            
+            for book in self.patron_list[patron].borrowed_books:
+                
+                print(f"\n{book}")
+                
+    def search_book(self, book_title = "", book_author = ""):
+        
+        for book in self.book_collection:
+            
+            if book.title == book_title or book.author == book_author:
+                
+                print(book)
